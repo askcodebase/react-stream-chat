@@ -36,15 +36,11 @@ export const ChatInput = ({
 
 
   const {
-    state: { selectedConversation, messageIsStreaming, prompts },
-
-    dispatch: homeDispatch,
+    state: { selectedConversation, messageIsStreaming },
   } = useContext(HomeContext);
 
   const [content, setContent] = useState<string>();
   const [isTyping, setIsTyping] = useState<boolean>(false);
-  const [variables, setVariables] = useState<string[]>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;

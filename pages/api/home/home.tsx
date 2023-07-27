@@ -1,7 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
-import { useQuery } from 'react-query';
-
-import { GetServerSideProps } from 'next';
+import { useEffect, useRef } from 'react';
 import Head from 'next/head';
 
 import { useCreateReducer } from '@/hooks/useCreateReducer';
@@ -44,8 +41,6 @@ const Home = ({
   serverSidePluginKeysSet,
   defaultModelId,
 }: Props) => {
-  
-  const [initialRender, setInitialRender] = useState<boolean>(true);
 
   const contextValue = useCreateReducer<HomeInitialState>({
     initialState,
@@ -349,30 +344,3 @@ const Home = ({
   );
 };
 export default Home;
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const defaultModelId =
-    (process.env.DEFAULT_MODEL &&
-      Object.values(OpenAIModelID).includes(
-        process.env.DEFAULT_MODEL as OpenAIModelID,
-      ) &&
-      process.env.DEFAULT_MODEL) ||
-    fallbackModelID;
-
-  let serverSidePluginKeysSet = false;
-
-  const googleApiKey = process.env.GOOGLE_API_KEY;
-  const googleCSEId = process.env.GOOGLE_CSE_ID;
-
-  if (googleApiKey && googleCSEId) {
-    serverSidePluginKeysSet = true;
-  }
-
-  return {
-    props: {
-      serverSideApiKeyIsSet: !!process.env.OPENAI_API_KEY,
-      defaultModelId,
-      serverSidePluginKeysSet
-    },
-  };
-};
