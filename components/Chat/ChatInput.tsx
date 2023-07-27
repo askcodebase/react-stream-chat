@@ -19,7 +19,6 @@ import {
 
 import { Message } from '@/types/chat';
 import { Plugin } from '@/types/plugin';
-import { Prompt } from '@/types/prompt';
 
 import HomeContext from '@/pages/api/home/home.context';
 
@@ -125,7 +124,6 @@ export const ChatInput = ({
         );
         return newContent;
       });
-      handlePromptSelect(selectedPrompt);
     }
     setShowPromptList(false);
   };
@@ -188,21 +186,6 @@ export const ChatInput = ({
       setPromptInputValue('');
     }
   }, []);
-
-  const handlePromptSelect = (prompt: Prompt) => {
-    const parsedVariables = parseVariables(prompt.content);
-    setVariables(parsedVariables);
-
-    if (parsedVariables.length > 0) {
-      setIsModalVisible(true);
-    } else {
-      setContent((prevContent) => {
-        const updatedContent = prevContent?.replace(/\/\w*$/, prompt.content);
-        return updatedContent;
-      });
-      updatePromptListVisibility(prompt.content);
-    }
-  };
 
   const handleSubmit = (updatedVariables: string[]) => {
     const newContent = content?.replace(/{{(.*?)}}/g, (match, variable) => {
