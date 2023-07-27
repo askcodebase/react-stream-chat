@@ -21,7 +21,7 @@ import { PromptbarInitialState, initialState } from './Promptbar.state';
 import { v4 as uuidv4 } from 'uuid';
 
 const Promptbar = () => {
-  const { t } = useTranslation('promptbar');
+  
 
   const promptBarContextValue = useCreateReducer<PromptbarInitialState>({
     initialState,
@@ -128,7 +128,7 @@ const Promptbar = () => {
       <Sidebar<Prompt>
         side={'right'}
         isOpen={showPromptbar}
-        addItemButtonTitle={t('New prompt')}
+        addItemButtonTitle={'New prompt'}
         itemComponent={
           <Prompts
             prompts={filteredPrompts.filter((prompt) => !prompt.folderId)}
@@ -142,7 +142,7 @@ const Promptbar = () => {
         }
         toggleOpen={handleTogglePromptbar}
         handleCreateItem={handleCreatePrompt}
-        handleCreateFolder={() => handleCreateFolder(t('New folder'), 'prompt')}
+        handleCreateFolder={() => handleCreateFolder('New folder', 'prompt')}
         handleDrop={handleDrop}
       />
     </PromptbarContext.Provider>

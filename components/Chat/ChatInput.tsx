@@ -16,7 +16,6 @@ import {
   useState,
 } from 'react';
 
-import { useTranslation } from 'next-i18next';
 
 import { Message } from '@/types/chat';
 import { Plugin } from '@/types/plugin';
@@ -45,7 +44,7 @@ export const ChatInput = ({
   textareaRef,
   showScrollDownButton,
 }: Props) => {
-  const { t } = useTranslation('chat');
+  
 
   const {
     state: { selectedConversation, messageIsStreaming, prompts },
@@ -74,12 +73,7 @@ export const ChatInput = ({
     const maxLength = selectedConversation?.model.maxLength;
 
     if (maxLength && value.length > maxLength) {
-      alert(
-        t(
-          `Message limit is {{maxLength}} characters. You have entered {{valueLength}} characters.`,
-          { maxLength, valueLength: value.length },
-        ),
-      );
+      alert('Message limit is {{maxLength}} characters. You have entered {{valueLength}} characters.');
       return;
     }
 
@@ -93,7 +87,7 @@ export const ChatInput = ({
     }
 
     if (!content) {
-      alert(t('Please enter a message'));
+      alert('Please enter a message');
       return;
     }
 
@@ -264,7 +258,7 @@ export const ChatInput = ({
             className="absolute top-0 left-0 right-0 mx-auto mb-3 flex w-fit items-center gap-3 rounded border border-neutral-200 bg-white py-2 px-4 text-black hover:opacity-50 dark:border-neutral-600 dark:bg-[#343541] dark:text-white md:mb-0 md:mt-2"
             onClick={handleStopConversation}
           >
-            <IconPlayerStop size={16} /> {t('Stop Generating')}
+            <IconPlayerStop size={16} /> {'Stop Generating'}
           </button>
         )}
 
@@ -275,7 +269,7 @@ export const ChatInput = ({
               className="absolute top-0 left-0 right-0 mx-auto mb-3 flex w-fit items-center gap-3 rounded border border-neutral-200 bg-white py-2 px-4 text-black hover:opacity-50 dark:border-neutral-600 dark:bg-[#343541] dark:text-white md:mb-0 md:mt-2"
               onClick={onRegenerate}
             >
-              <IconRepeat size={16} /> {t('Regenerate response')}
+              <IconRepeat size={16} /> {'Regenerate response'}
             </button>
           )}
 
@@ -325,7 +319,7 @@ export const ChatInput = ({
               }`,
             }}
             placeholder={
-              t('Type a message or type "/" to select a prompt...') || ''
+              'Type a message or type "/" to select a prompt...' || ''
             }
             value={content}
             rows={1}
@@ -389,9 +383,7 @@ export const ChatInput = ({
           ChatBot UI
         </a>
         .{' '}
-        {t(
-          "Chatbot UI is an advanced chatbot kit for OpenAI's chat models aiming to mimic ChatGPT's interface and functionality.",
-        )}
+          Chatbot UI is an advanced chatbot kit for OpenAI's chat models aiming to mimic ChatGPT's interface and functionality.
       </div>
     </div>
   );

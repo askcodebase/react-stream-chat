@@ -10,8 +10,6 @@ import {
 } from 'react';
 import toast from 'react-hot-toast';
 
-import { useTranslation } from 'next-i18next';
-
 import { getEndpoint } from '@/utils/app/api';
 import {
   saveConversation,
@@ -39,7 +37,6 @@ interface Props {
 }
 
 export const Chat = memo(({ stopConversationRef }: Props) => {
-  const { t } = useTranslation('chat');
 
   const {
     state: {
@@ -290,7 +287,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
 
   const onClearAll = () => {
     if (
-      confirm(t<string>('Are you sure you want to clear all messages?')) &&
+      confirm('Are you sure you want to clear all messages?') &&
       selectedConversation
     ) {
       handleUpdateConversation(selectedConversation, {
@@ -370,12 +367,10 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
               with their API.
             </div>
             <div className="mb-2">
-              {t(
-                'Please set your OpenAI API key in the bottom left of the sidebar.',
-              )}
+                Please set your OpenAI API key in the bottom left of the sidebar.'
             </div>
             <div>
-              {t("If you don't have an OpenAI API key, you can get one here: ")}
+              If you don't have an OpenAI API key, you can get one here:
               <a
                 href="https://platform.openai.com/account/api-keys"
                 target="_blank"
@@ -425,7 +420,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
                       />
 
                       <TemperatureSlider
-                        label={t('Temperature')}
+                        label={'Temperature'}
                         onChangeTemperature={(temperature) =>
                           handleUpdateConversation(selectedConversation, {
                             key: 'temperature',
@@ -440,7 +435,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
             ) : (
               <>
                 <div className="sticky top-0 z-10 flex justify-center border border-b-neutral-300 bg-neutral-100 py-2 text-sm text-neutral-500 dark:border-none dark:bg-[#444654] dark:text-neutral-200">
-                  {t('Model')}: {selectedConversation?.model.name} | {t('Temp')}
+                  {'Model'}: {selectedConversation?.model.name} | {'Temp'}
                   : {selectedConversation?.temperature} |
                   <button
                     className="ml-2 cursor-pointer hover:opacity-50"

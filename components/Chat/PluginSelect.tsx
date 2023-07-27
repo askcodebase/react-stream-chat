@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
 
-import { useTranslation } from 'next-i18next';
 
 import { Plugin, PluginList } from '@/types/plugin';
 
@@ -15,7 +14,7 @@ export const PluginSelect: FC<Props> = ({
   onPluginChange,
   onKeyDown,
 }) => {
-  const { t } = useTranslation('chat');
+  
 
   const selectRef = useRef<HTMLSelectElement>(null);
 
@@ -66,7 +65,7 @@ export const PluginSelect: FC<Props> = ({
         <select
           ref={selectRef}
           className="w-full cursor-pointer bg-transparent p-2"
-          placeholder={t('Select a plugin') || ''}
+          placeholder={'Select a plugin' || ''}
           value={plugin?.id || ''}
           onChange={(e) => {
             onPluginChange(

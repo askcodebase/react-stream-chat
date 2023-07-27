@@ -1,6 +1,5 @@
 import { FC, useContext, useState } from 'react';
 
-import { useTranslation } from 'next-i18next';
 
 import { DEFAULT_TEMPERATURE } from '@/utils/app/const';
 
@@ -22,7 +21,7 @@ export const TemperatureSlider: FC<Props> = ({
   const [temperature, setTemperature] = useState(
     lastConversation?.temperature ?? DEFAULT_TEMPERATURE,
   );
-  const { t } = useTranslation('chat');
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(event.target.value);
     setTemperature(newValue);
@@ -53,13 +52,13 @@ export const TemperatureSlider: FC<Props> = ({
       />
       <ul className="w mt-2 pb-8 flex justify-between px-[24px] text-neutral-900 dark:text-neutral-100">
         <li className="flex justify-center">
-          <span className="absolute">{t('Precise')}</span>
+          <span className="absolute">{'Precise'}</span>
         </li>
         <li className="flex justify-center">
-          <span className="absolute">{t('Neutral')}</span>
+          <span className="absolute">{'Neutral'}</span>
         </li>
         <li className="flex justify-center">
-          <span className="absolute">{t('Creative')}</span>
+          <span className="absolute">{'Creative'}</span>
         </li>
       </ul>
     </div>
