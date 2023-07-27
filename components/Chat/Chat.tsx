@@ -180,12 +180,19 @@ This implementation of QuickSort uses the Lomuto partition scheme, where we pick
 QuickSort is an efficient, in-place sorting algorithm that, in practice, outperforms other sorting algorithms for large datasets, especially when the data is stored in a slow-to-access sequential medium like a hard disk. It has an average and worst-case time complexity of O(n log n).
 `;
 
+        const uint8array = encoder.encode(markdown);
         const data = new ReadableStream({
           start(controller) {
-            intervalId = setInterval(() => {
-              const text = 'Hello, world!';
-              controller.enqueue(encoder.encode(text));
-            }, interval);
+            let i = 0;
+            const intervalId = setInterval(() => {
+              if (i < uint8array.length) {
+                controller.enqueue(uint8array.subarray(i, i + 5)); // Enqueue 5 tokens per 500ms
+                i += 5;
+              } else {
+                controller.close();
+                clearInterval(intervalId);
+              }
+            }, 100);  // 500ms interval
           },
           pull(controller) {
             // This method is called when the reader wants more data
