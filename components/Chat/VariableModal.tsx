@@ -10,7 +10,6 @@ interface Props {
 }
 
 export const VariableModal: FC<Props> = ({
-  prompt,
   variables,
   onSubmit,
   onClose,
@@ -88,10 +87,6 @@ export const VariableModal: FC<Props> = ({
       >
         <div className="mb-4 text-xl font-bold text-black dark:text-neutral-200">
           {prompt.name}
-        </div>
-
-        <div className="mb-4 text-sm italic text-black dark:text-neutral-200">
-          {prompt.description}
         </div>
 
         {updatedVariables.map((variable, index) => (
