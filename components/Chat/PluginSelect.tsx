@@ -14,7 +14,7 @@ export const PluginSelect: FC<Props> = ({
   onPluginChange,
   onKeyDown,
 }) => {
-  
+
 
   const selectRef = useRef<HTMLSelectElement>(null);
 
