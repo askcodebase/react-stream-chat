@@ -27,7 +27,6 @@ import { OpenAIModelID, OpenAIModels, fallbackModelID } from '@/types/openai';
 import { Prompt } from '@/types/prompt';
 
 import { Chat } from '@/components/Chat/Chat';
-import { Chatbar } from '@/components/Chatbar/Chatbar';
 
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
@@ -339,7 +338,6 @@ const Home = ({
           className={`flex h-screen w-screen flex-col text-sm text-white dark:text-white ${lightMode}`}
         >
           <div className="flex h-full w-full pt-[48px] sm:pt-0">
-            <Chatbar />
 
             <div className="flex flex-1">
               <Chat stopConversationRef={stopConversationRef} />

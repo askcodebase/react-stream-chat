@@ -1,7 +1,6 @@
 import {
   IconArrowDown,
   IconBolt,
-  IconBrandGoogle,
   IconPlayerStop,
   IconRepeat,
   IconSend,
@@ -9,7 +8,6 @@ import {
 import {
   KeyboardEvent,
   MutableRefObject,
-  useCallback,
   useContext,
   useEffect,
   useState,
@@ -114,19 +112,6 @@ export const ChatInput = ({
     return foundVariables;
   };
 
-  const handleSubmit = (updatedVariables: string[]) => {
-    const newContent = content?.replace(/{{(.*?)}}/g, (match, variable) => {
-      const index = variables.indexOf(variable);
-      return updatedVariables[index];
-    });
-
-    setContent(newContent);
-
-    if (textareaRef && textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  };
-
   useEffect(() => {
     if (textareaRef && textareaRef.current) {
       textareaRef.current.style.height = 'inherit';
@@ -175,8 +160,8 @@ export const ChatInput = ({
               bottom: `${textareaRef?.current?.scrollHeight}px`,
               maxHeight: '400px',
               overflow: `${textareaRef.current && textareaRef.current.scrollHeight > 400
-                  ? 'auto'
-                  : 'hidden'
+                ? 'auto'
+                : 'hidden'
                 }`,
             }}
             placeholder={
