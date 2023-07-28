@@ -1,10 +1,9 @@
-import CopyPlugin from 'copy-webpack-plugin';
-import path from 'path';
-
+const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path');
 const isDev = process.env.NODE_ENV !== 'production';
 
-export default {
-  entry: './src/main.tsx',
+module.exports = {
+  entry: './src/index.tsx',
   mode: isDev ? 'development' : 'production',
   devtool: 'inline-source-map',
   output: {
@@ -17,6 +16,9 @@ export default {
       crypto: false,
     },
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      '@': path.resolve(process.cwd(), 'src'),
+    },
   },
   stats: {
     errorDetails: true,
@@ -55,6 +57,6 @@ export default {
     compress: true,
     hot: true,
     host: '0.0.0.0',
-    port: process.env.PORT || 1234,
+    port: process.env.PORT || 3000,
   },
 };
