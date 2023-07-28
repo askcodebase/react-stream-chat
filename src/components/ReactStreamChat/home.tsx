@@ -1,29 +1,29 @@
 import { useEffect, useRef } from 'react';
 import Head from 'next/head';
 
-import { useCreateReducer } from '@/hooks/useCreateReducer';
+import { useCreateReducer } from '@/src/hooks/useCreateReducer';
 
 import {
   cleanConversationHistory,
   cleanSelectedConversation,
-} from '@/utils/app/clean';
-import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/utils/app/const';
+} from '@/src/utils/app/clean';
+import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/src/utils/app/const';
 import {
   saveConversation,
   saveConversations,
   updateConversation,
-} from '@/utils/app/conversation';
-import { saveFolders } from '@/utils/app/folders';
-import { savePrompts } from '@/utils/app/prompts';
-import { getSettings } from '@/utils/app/settings';
+} from '@/src/utils/app/conversation';
+import { saveFolders } from '@/src/utils/app/folders';
+import { savePrompts } from '@/src/utils/app/prompts';
+import { getSettings } from '@/src/utils/app/settings';
 
-import { Conversation } from '@/types/chat';
-import { KeyValuePair } from '@/types/data';
-import { FolderInterface, FolderType } from '@/types/folder';
-import { OpenAIModelID, OpenAIModels, fallbackModelID } from '@/types/openai';
-import { Prompt } from '@/types/prompt';
+import { Conversation } from '@/src/types/chat';
+import { KeyValuePair } from '@/src/types/data';
+import { FolderInterface, FolderType } from '@/src/types/folder';
+import { OpenAIModelID, OpenAIModels, fallbackModelID } from '@/src/types/openai';
+import { Prompt } from '@/src/types/prompt';
 
-import { Chat } from '@/components/Chat/Chat';
+import { Chat } from '@/src/components/Chat/Chat';
 
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
