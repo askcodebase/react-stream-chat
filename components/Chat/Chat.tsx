@@ -8,16 +8,13 @@ import {
   useState,
 } from 'react';
 
-import {
-  saveConversation,
-  saveConversations,
-} from '@/utils/app/conversation';
+import { saveConversation, saveConversations } from '@/utils/app/conversation';
 import { throttle } from '@/utils/data/throttle';
+
 import { ChatBody, Conversation, Message } from '@/types/chat';
 
 import HomeContext from '@/pages/api/home/home.context';
 
-import Spinner from '../Spinner';
 import { ChatInput } from './ChatInput';
 import { MemoizedChatMessage } from './MemoizedChatMessage';
 
@@ -26,15 +23,8 @@ interface Props {
 }
 
 export const Chat = memo(({ stopConversationRef }: Props) => {
-
   const {
-    state: {
-      selectedConversation,
-      conversations,
-      models,
-      apiKey,
-      pluginKeys,
-    },
+    state: { selectedConversation, conversations, models, apiKey, pluginKeys },
     handleUpdateConversation,
     dispatch: homeDispatch,
   } = useContext(HomeContext);
@@ -105,7 +95,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           };
         }
         homeDispatch({ field: 'loading', value: false });
-        const interval = 500;  // 500ms
+        const interval = 500; // 500ms
         const encoder = new TextEncoder();
 
         let intervalId: NodeJS.Timeout;
@@ -178,7 +168,7 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
                 controller.close();
                 clearInterval(intervalId);
               }
-            }, 100);  // 500ms interval
+            }, 100); // 500ms interval
           },
           pull(controller) {
             // This method is called when the reader wants more data
@@ -218,8 +208,8 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
               value: updatedConversation,
             });
           } else {
-            const updatedMessages: Message[] =
-              updatedConversation.messages.map((message, index) => {
+            const updatedMessages: Message[] = updatedConversation.messages.map(
+              (message, index) => {
                 if (index === updatedConversation.messages.length - 1) {
                   return {
                     ...message,
@@ -227,7 +217,8 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
                   };
                 }
                 return message;
-              });
+              },
+            );
             updatedConversation = {
               ...updatedConversation,
               messages: updatedMessages,
@@ -349,44 +340,26 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
         ref={chatContainerRef}
         onScroll={handleScroll}
       >
-        {selectedConversation?.messages.length === 0 ? (
-          <>
-            <div className="mx-auto flex flex-col space-y-5 md:space-y-10 px-3 pt-5 md:pt-12 sm:max-w-[600px]">
-              <div className="text-center text-3xl font-semibold text-gray-800 dark:text-gray-100">
-                {models.length === 0 ? (
-                  <div>
-                    <Spinner size="16px" className="mx-auto" />
-                  </div>
-                ) : (
-                  'Chatbot UI'
-                )}
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            {selectedConversation?.messages.map((message, index) => (
-              <MemoizedChatMessage
-                key={index}
-                message={message}
-                messageIndex={index}
-                onEdit={(editedMessage) => {
-                  setCurrentMessage(editedMessage);
-                  // discard edited message and the ones that come after then resend
-                  handleSend(
-                    editedMessage,
-                    selectedConversation?.messages.length - index,
-                  );
-                }}
-              />
-            ))}
+        {selectedConversation?.messages.map((message, index) => (
+          <MemoizedChatMessage
+            key={index}
+            message={message}
+            messageIndex={index}
+            onEdit={(editedMessage) => {
+              setCurrentMessage(editedMessage);
+              // discard edited message and the ones that come after then resend
+              handleSend(
+                editedMessage,
+                selectedConversation?.messages.length - index,
+              );
+            }}
+          />
+        ))}
 
-            <div
-              className="h-[162px] bg-white dark:bg-[#343541]"
-              ref={messagesEndRef}
-            />
-          </>
-        )}
+        <div
+          className="h-[162px] bg-white dark:bg-[#343541]"
+          ref={messagesEndRef}
+        />
       </div>
 
       <ChatInput

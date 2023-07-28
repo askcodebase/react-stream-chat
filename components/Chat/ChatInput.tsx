@@ -14,6 +14,7 @@ import {
 } from 'react';
 
 import { Message } from '@/types/chat';
+
 import HomeContext from '@/pages/api/home/home.context';
 
 interface Props {
@@ -33,8 +34,6 @@ export const ChatInput = ({
   textareaRef,
   showScrollDownButton,
 }: Props) => {
-
-
   const {
     state: { selectedConversation, messageIsStreaming },
   } = useContext(HomeContext);
@@ -44,12 +43,12 @@ export const ChatInput = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    const maxLength = selectedConversation?.model.maxLength;
+    // const maxLength = selectedConversation?.model.maxLength;
 
-    if (maxLength && value.length > maxLength) {
-      alert('Message limit is {{maxLength}} characters. You have entered {{valueLength}} characters.');
-      return;
-    }
+    // if (maxLength && value.length > maxLength) {
+    //   alert('Message limit is {{maxLength}} characters. You have entered {{valueLength}} characters.');
+    //   return;
+    // }
 
     setContent(value);
   };
@@ -112,8 +111,9 @@ export const ChatInput = ({
     if (textareaRef && textareaRef.current) {
       textareaRef.current.style.height = 'inherit';
       textareaRef.current.style.height = `${textareaRef.current?.scrollHeight}px`;
-      textareaRef.current.style.overflow = `${textareaRef?.current?.scrollHeight > 400 ? 'auto' : 'hidden'
-        }`;
+      textareaRef.current.style.overflow = `${
+        textareaRef?.current?.scrollHeight > 400 ? 'auto' : 'hidden'
+      }`;
     }
   }, [content]);
 
@@ -143,7 +143,7 @@ export const ChatInput = ({
         <div className="relative mx-2 flex w-full flex-grow flex-col rounded-md border border-black/10 bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:border-gray-900/50 dark:bg-[#40414F] dark:text-white dark:shadow-[0_0_15px_rgba(0,0,0,0.10)] sm:mx-4">
           <button
             className="absolute left-2 top-2 rounded-sm p-1 text-neutral-800 opacity-60 hover:bg-neutral-200 hover:text-neutral-900 dark:bg-opacity-50 dark:text-neutral-100 dark:hover:text-neutral-200"
-            onKeyDown={(e) => { }}
+            onKeyDown={(e) => {}}
           >
             {<IconBolt size={20} />}
           </button>
@@ -155,10 +155,11 @@ export const ChatInput = ({
               resize: 'none',
               bottom: `${textareaRef?.current?.scrollHeight}px`,
               maxHeight: '400px',
-              overflow: `${textareaRef.current && textareaRef.current.scrollHeight > 400
-                ? 'auto'
-                : 'hidden'
-                }`,
+              overflow: `${
+                textareaRef.current && textareaRef.current.scrollHeight > 400
+                  ? 'auto'
+                  : 'hidden'
+              }`,
             }}
             placeholder={
               'Type a message or type "/" to select a prompt...' || ''
