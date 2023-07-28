@@ -8,12 +8,12 @@ import {
   useState,
 } from 'react';
 
-import { saveConversation, saveConversations } from '@/src/utils/app/conversation';
-import { throttle } from '@/src/utils/data/throttle';
+import { saveConversation, saveConversations } from '@/utils/app/conversation';
+import { throttle } from '@/utils/data/throttle';
 
-import { ChatBody, Conversation, Message } from '@/src/types/chat';
+import { ChatBody, Conversation, Message } from '@/types/chat';
 
-import HomeContext from '@/src/components/ReactStreamChat/home.context';
+import HomeContext from '@/home.context';
 
 import { ChatInput } from './ChatInput';
 import { MemoizedChatMessage } from './MemoizedChatMessage';

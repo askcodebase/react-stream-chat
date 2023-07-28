@@ -13,9 +13,9 @@ import {
   useState,
 } from 'react';
 
-import { Message } from '@/src/types/chat';
+import { Message } from '@/types/chat';
 
-import HomeContext from '@/src/components/ReactStreamChat/home.context';
+import HomeContext from '@/home.context';
 
 interface Props {
   onSend: (message: Message) => void;

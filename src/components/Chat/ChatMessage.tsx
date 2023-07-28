@@ -9,11 +9,11 @@ import {
 import { FC, memo, useContext, useEffect, useRef, useState } from 'react';
 
 
-import { updateConversation } from '@/src/utils/app/conversation';
+import { updateConversation } from '@/utils/app/conversation';
 
-import { Message } from '@/src/types/chat';
+import { Message } from '@/types/chat';
 
-import HomeContext from '@/src/components/ReactStreamChat/home.context';
+import HomeContext from '@/home.context';
 
 import { CodeBlock } from '../Markdown/CodeBlock';
 import { MemoizedReactMarkdown } from '../Markdown/MemoizedReactMarkdown';

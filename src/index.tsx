@@ -1,29 +1,33 @@
 import { useEffect, useRef } from 'react';
+
 import Head from 'next/head';
 
-import { useCreateReducer } from '@/src/hooks/useCreateReducer';
+import { useCreateReducer } from '@/hooks/useCreateReducer';
 
 import {
   cleanConversationHistory,
   cleanSelectedConversation,
-} from '@/src/utils/app/clean';
-import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/src/utils/app/const';
+} from '@/utils/app/clean';
+import {
+  DEFAULT_SYSTEM_PROMPT,
+  DEFAULT_TEMPERATURE,
+} from '@/utils/app/const';
 import {
   saveConversation,
   saveConversations,
   updateConversation,
-} from '@/src/utils/app/conversation';
-import { saveFolders } from '@/src/utils/app/folders';
-import { savePrompts } from '@/src/utils/app/prompts';
-import { getSettings } from '@/src/utils/app/settings';
+} from '@/utils/app/conversation';
+import { saveFolders } from '@/utils/app/folders';
+import { savePrompts } from '@/utils/app/prompts';
+import { getSettings } from '@/utils/app/settings';
 
-import { Conversation } from '@/src/types/chat';
-import { KeyValuePair } from '@/src/types/data';
-import { FolderInterface, FolderType } from '@/src/types/folder';
-import { OpenAIModelID, OpenAIModels, fallbackModelID } from '@/src/types/openai';
-import { Prompt } from '@/src/types/prompt';
+import { Conversation } from '@/types/chat';
+import { KeyValuePair } from '@/types/data';
+import { FolderInterface, FolderType } from '@/types/folder';
+import { OpenAIModelID, OpenAIModels } from '@/types/openai';
+import { Prompt } from '@/types/prompt';
 
-import { Chat } from '@/src/components/Chat/Chat';
+import { Chat } from '@/components/Chat/Chat';
 
 import HomeContext from './home.context';
 import { HomeInitialState, initialState } from './home.state';
@@ -41,7 +45,6 @@ const Home = ({
   serverSidePluginKeysSet,
   defaultModelId,
 }: Props) => {
-
   const contextValue = useCreateReducer<HomeInitialState>({
     initialState,
   });
@@ -333,7 +336,6 @@ const Home = ({
           className={`flex h-screen w-screen flex-col text-sm text-white dark:text-white ${lightMode}`}
         >
           <div className="flex h-full w-full pt-[48px] sm:pt-0">
-
             <div className="flex flex-1">
               <Chat stopConversationRef={stopConversationRef} />
             </div>

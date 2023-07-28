@@ -1,9 +1,9 @@
-import { Conversation, Message } from '@/src/types/chat';
-import { ErrorMessage } from '@/src/types/error';
-import { FolderInterface } from '@/src/types/folder';
-import { OpenAIModel, OpenAIModelID } from '@/src/types/openai';
-import { PluginKey } from '@/src/types/plugin';
-import { Prompt } from '@/src/types/prompt';
+import { Conversation, Message } from '@/types/chat';
+import { ErrorMessage } from '@/types/error';
+import { FolderInterface } from '@/types/folder';
+import { OpenAIModel, OpenAIModelID } from '@/types/openai';
+import { PluginKey } from '@/types/plugin';
+import { Prompt } from '@/types/prompt';
 
 export interface HomeInitialState {
   apiKey: string;
