@@ -13,7 +13,7 @@ import { updateConversation } from '@/utils/app/conversation';
 
 import { Message } from '@/types/chat';
 
-import HomeContext from '@/home.context';
+import HomeContext from '@/components/ReactStreamChat/home.context';
 
 import { CodeBlock } from '../Markdown/CodeBlock';
 import { MemoizedReactMarkdown } from '../Markdown/MemoizedReactMarkdown';

@@ -13,7 +13,7 @@ import { throttle } from '@/utils/data/throttle';
 
 import { ChatBody, Conversation, Message } from '@/types/chat';
 
-import HomeContext from '@/home.context';
+import HomeContext from '@/components/ReactStreamChat/home.context';
 
 import { ChatInput } from './ChatInput';
 import { MemoizedChatMessage } from './MemoizedChatMessage';

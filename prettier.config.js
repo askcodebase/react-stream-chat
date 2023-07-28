@@ -8,9 +8,6 @@ module.exports = {
   importOrder: [
     'react', // React
     '^react-.*$', // React-related imports
-    '^next', // Next-related imports
-    '^next-.*$', // Next-related imports
-    '^next/.*$', // Next-related imports
     '^.*/hooks/.*$', // Hooks
     '^.*/services/.*$', // Services
     '^.*/utils/.*$', // Utils
