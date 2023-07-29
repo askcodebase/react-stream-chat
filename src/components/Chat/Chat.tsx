@@ -20,7 +20,7 @@ interface Props {
 
 export const Chat = memo(({ stopConversationRef }: Props) => {
   const {
-    state: { selectedConversation, conversations, apiKey },
+    state: { selectedConversation, conversations },
     handleUpdateConversation,
     dispatch: homeDispatch,
   } = useContext(ReactStreamChatContext)
@@ -220,7 +220,7 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
         homeDispatch({ field: 'messageIsStreaming', value: false })
       }
     },
-    [apiKey, conversations, selectedConversation, stopConversationRef],
+    [conversations, selectedConversation, stopConversationRef],
   )
 
   const handleScroll = () => {

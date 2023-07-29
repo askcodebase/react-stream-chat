@@ -26,7 +26,7 @@ export const ReactStreamChat = () => {
   })
 
   const {
-    state: { lightMode, folders, conversations, selectedConversation, prompts },
+    state: { lightMode, conversations, selectedConversation },
     dispatch,
   } = contextValue
 
@@ -90,42 +90,9 @@ export const ReactStreamChat = () => {
     dispatch({ field: 'conversations', value: all })
   }
 
-  // EFFECTS  --------------------------------------------
-
-  useEffect(() => {
-    if (window.innerWidth < 640) {
-      dispatch({ field: 'showChatbar', value: false })
-    }
-  }, [selectedConversation])
-
   // ON LOAD --------------------------------------------
 
   useEffect(() => {
-    if (window.innerWidth < 640) {
-      dispatch({ field: 'showChatbar', value: false })
-      dispatch({ field: 'showPromptbar', value: false })
-    }
-
-    const showChatbar = localStorage.getItem('showChatbar')
-    if (showChatbar) {
-      dispatch({ field: 'showChatbar', value: showChatbar === 'true' })
-    }
-
-    const showPromptbar = localStorage.getItem('showPromptbar')
-    if (showPromptbar) {
-      dispatch({ field: 'showPromptbar', value: showPromptbar === 'true' })
-    }
-
-    const folders = localStorage.getItem('folders')
-    if (folders) {
-      dispatch({ field: 'folders', value: JSON.parse(folders) })
-    }
-
-    const prompts = localStorage.getItem('prompts')
-    if (prompts) {
-      dispatch({ field: 'prompts', value: JSON.parse(prompts) })
-    }
-
     const conversationHistory = localStorage.getItem('conversationHistory')
     if (conversationHistory) {
       const parsedConversationHistory: Conversation[] =
