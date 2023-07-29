@@ -21,7 +21,7 @@ interface Props {
 export const Chat = memo(({ stopConversationRef }: Props) => {
   const {
     state: { selectedConversation, conversations },
-    dispatch: homeDispatch,
+    dispatch,
   } = useContext(ReactStreamChatContext)
 
   const [currentMessage, setCurrentMessage] = useState<Message>()
@@ -52,12 +52,12 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
             messages: [...selectedConversation.messages, message],
           }
         }
-        homeDispatch({
+        dispatch({
           field: 'selectedConversation',
           value: updatedConversation,
         })
-        homeDispatch({ field: 'loading', value: true })
-        homeDispatch({ field: 'messageIsStreaming', value: true })
+        dispatch({ field: 'loading', value: true })
+        dispatch({ field: 'messageIsStreaming', value: true })
         if (updatedConversation.messages.length === 1) {
           const { content } = message
           const customName =
@@ -67,7 +67,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
             name: customName,
           }
         }
-        homeDispatch({ field: 'loading', value: false })
+        dispatch({ field: 'loading', value: false })
         const interval = 500 // 500ms
         const encoder = new TextEncoder()
 
@@ -176,7 +176,7 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
               ...updatedConversation,
               messages: updatedMessages,
             }
-            homeDispatch({
+            dispatch({
               field: 'selectedConversation',
               value: updatedConversation,
             })
@@ -196,7 +196,7 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
               ...updatedConversation,
               messages: updatedMessages,
             }
-            homeDispatch({
+            dispatch({
               field: 'selectedConversation',
               value: updatedConversation,
             })
@@ -214,9 +214,9 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
         if (updatedConversations.length === 0) {
           updatedConversations.push(updatedConversation)
         }
-        homeDispatch({ field: 'conversations', value: updatedConversations })
+        dispatch({ field: 'conversations', value: updatedConversations })
         saveConversations(updatedConversations)
-        homeDispatch({ field: 'messageIsStreaming', value: false })
+        dispatch({ field: 'messageIsStreaming', value: false })
       }
     },
     [conversations, selectedConversation, stopConversationRef],

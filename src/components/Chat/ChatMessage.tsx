@@ -1,6 +1,5 @@
 import { IconCheck, IconCopy, IconRobot, IconUser } from '@tabler/icons-react'
-import { FC, memo, useContext, useEffect, useRef, useState } from 'react'
-import { updateConversation } from '@/utils/app/conversation'
+import { FC, memo, useContext, useState } from 'react'
 import { Message } from '@/types/chat'
 import { ReactStreamChatContext } from '@/components/ReactStreamChat/context'
 import { CodeBlock } from '../Markdown/CodeBlock'
@@ -16,59 +15,10 @@ export interface Props {
 
 export const ChatMessage: FC<Props> = memo(({ message, messageIndex }) => {
   const {
-    state: { selectedConversation, conversations, messageIsStreaming },
-    dispatch: homeDispatch,
+    state: { selectedConversation, messageIsStreaming },
   } = useContext(ReactStreamChatContext)
 
-  const [isTyping, setIsTyping] = useState<boolean>(false)
-  const [messageContent, setMessageContent] = useState(message.content)
   const [messagedCopied, setMessageCopied] = useState(false)
-
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessageContent(event.target.value)
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'inherit'
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
-    }
-  }
-
-  const handleDeleteMessage = () => {
-    if (!selectedConversation) return
-
-    const { messages } = selectedConversation
-    const findIndex = messages.findIndex((elm) => elm === message)
-
-    if (findIndex < 0) return
-
-    if (
-      findIndex < messages.length - 1 &&
-      messages[findIndex + 1].role === 'assistant'
-    ) {
-      messages.splice(findIndex, 2)
-    } else {
-      messages.splice(findIndex, 1)
-    }
-    const updatedConversation = {
-      ...selectedConversation,
-      messages,
-    }
-
-    const { single, all } = updateConversation(
-      updatedConversation,
-      conversations,
-    )
-    homeDispatch({ field: 'selectedConversation', value: single })
-    homeDispatch({ field: 'conversations', value: all })
-  }
-
-  const handlePressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !isTyping && !e.shiftKey) {
-      e.preventDefault()
-    }
-  }
-
   const copyOnClick = () => {
     if (!navigator.clipboard) return
 
@@ -79,10 +29,6 @@ export const ChatMessage: FC<Props> = memo(({ message, messageIndex }) => {
       }, 2000)
     })
   }
-
-  useEffect(() => {
-    setMessageContent(message.content)
-  }, [message.content])
 
   return (
     <div
