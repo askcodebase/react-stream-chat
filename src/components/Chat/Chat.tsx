@@ -27,7 +27,6 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
 
   const [currentMessage, setCurrentMessage] = useState<Message>()
   const [autoScrollEnabled, setAutoScrollEnabled] = useState<boolean>(true)
-  const [showSettings, setShowSettings] = useState<boolean>(false)
   const [showScrollDownButton, setShowScrollDownButton] =
     useState<boolean>(false)
 
@@ -244,22 +243,6 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
       top: chatContainerRef.current.scrollHeight,
       behavior: 'smooth',
     })
-  }
-
-  const handleSettings = () => {
-    setShowSettings(!showSettings)
-  }
-
-  const onClearAll = () => {
-    if (
-      confirm('Are you sure you want to clear all messages?') &&
-      selectedConversation
-    ) {
-      handleUpdateConversation(selectedConversation, {
-        key: 'messages',
-        value: [],
-      })
-    }
   }
 
   const scrollDown = () => {

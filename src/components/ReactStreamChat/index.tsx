@@ -10,14 +10,9 @@ import {
   saveConversations,
   updateConversation,
 } from '@/utils/app/conversation'
-import { saveFolders } from '@/utils/app/folders'
-import { savePrompts } from '@/utils/app/prompts'
-import { getSettings } from '@/utils/app/settings'
 import { Conversation } from '@/types/chat'
 import { KeyValuePair } from '@/types/data'
-import { FolderInterface, FolderType } from '@/types/folder'
 import { OpenAIModelID, OpenAIModels } from '@/types/openai'
-import { Prompt } from '@/types/prompt'
 import { Chat } from '@/components/Chat/Chat'
 import { ReactStreamChatContext } from './context'
 import { ReactStreamChatInitialState, initialState } from './state'
@@ -44,72 +39,6 @@ export const ReactStreamChat = () => {
     })
 
     saveConversation(conversation)
-  }
-
-  // FOLDER OPERATIONS  --------------------------------------------
-
-  const handleCreateFolder = (name: string, type: FolderType) => {
-    const newFolder: FolderInterface = {
-      id: uuidv4(),
-      name,
-      type,
-    }
-
-    const updatedFolders = [...folders, newFolder]
-
-    dispatch({ field: 'folders', value: updatedFolders })
-    saveFolders(updatedFolders)
-  }
-
-  const handleDeleteFolder = (folderId: string) => {
-    const updatedFolders = folders.filter((f) => f.id !== folderId)
-    dispatch({ field: 'folders', value: updatedFolders })
-    saveFolders(updatedFolders)
-
-    const updatedConversations: Conversation[] = conversations.map((c) => {
-      if (c.folderId === folderId) {
-        return {
-          ...c,
-          folderId: null,
-        }
-      }
-
-      return c
-    })
-
-    dispatch({ field: 'conversations', value: updatedConversations })
-    saveConversations(updatedConversations)
-
-    const updatedPrompts: Prompt[] = prompts.map((p) => {
-      if (p.folderId === folderId) {
-        return {
-          ...p,
-          folderId: null,
-        }
-      }
-
-      return p
-    })
-
-    dispatch({ field: 'prompts', value: updatedPrompts })
-    savePrompts(updatedPrompts)
-  }
-
-  const handleUpdateFolder = (folderId: string, name: string) => {
-    const updatedFolders = folders.map((f) => {
-      if (f.id === folderId) {
-        return {
-          ...f,
-          name,
-        }
-      }
-
-      return f
-    })
-
-    dispatch({ field: 'folders', value: updatedFolders })
-
-    saveFolders(updatedFolders)
   }
 
   // CONVERSATION OPERATIONS  --------------------------------------------
@@ -172,14 +101,6 @@ export const ReactStreamChat = () => {
   // ON LOAD --------------------------------------------
 
   useEffect(() => {
-    const settings = getSettings()
-    if (settings.theme) {
-      dispatch({
-        field: 'lightMode',
-        value: settings.theme,
-      })
-    }
-
     if (window.innerWidth < 640) {
       dispatch({ field: 'showChatbar', value: false })
       dispatch({ field: 'showPromptbar', value: false })
