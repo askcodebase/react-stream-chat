@@ -4,26 +4,24 @@ import {
   IconPlayerStop,
   IconRepeat,
   IconSend,
-} from '@tabler/icons-react';
+} from '@tabler/icons-react'
 import {
   KeyboardEvent,
   MutableRefObject,
   useContext,
   useEffect,
   useState,
-} from 'react';
-
-import { Message } from '@/types/chat';
-
-import HomeContext from '@/components/ReactStreamChat/home.context';
+} from 'react'
+import { Message } from '@/types/chat'
+import { ReactStreamChatContext } from '@/components/ReactStreamChat/context'
 
 interface Props {
-  onSend: (message: Message) => void;
-  onRegenerate: () => void;
-  onScrollDownClick: () => void;
-  stopConversationRef: MutableRefObject<boolean>;
-  textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
-  showScrollDownButton: boolean;
+  onSend: (message: Message) => void
+  onRegenerate: () => void
+  onScrollDownClick: () => void
+  stopConversationRef: MutableRefObject<boolean>
+  textareaRef: MutableRefObject<HTMLTextAreaElement | null>
+  showScrollDownButton: boolean
 }
 
 export const ChatInput = ({
@@ -36,13 +34,13 @@ export const ChatInput = ({
 }: Props) => {
   const {
     state: { selectedConversation, messageIsStreaming },
-  } = useContext(HomeContext);
+  } = useContext(ReactStreamChatContext)
 
-  const [content, setContent] = useState<string>();
-  const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [content, setContent] = useState<string>()
+  const [isTyping, setIsTyping] = useState<boolean>(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
+    const value = e.target.value
     // const maxLength = selectedConversation?.model.maxLength;
 
     // if (maxLength && value.length > maxLength) {
@@ -50,72 +48,64 @@ export const ChatInput = ({
     //   return;
     // }
 
-    setContent(value);
-  };
+    setContent(value)
+  }
 
   const handleSend = () => {
     if (messageIsStreaming) {
-      return;
+      return
     }
 
     if (!content) {
-      alert('Please enter a message');
-      return;
+      alert('Please enter a message')
+      return
     }
 
-    onSend({ role: 'user', content });
-    setContent('');
+    onSend({ role: 'user', content })
+    setContent('')
 
     if (window.innerWidth < 640 && textareaRef && textareaRef.current) {
-      textareaRef.current.blur();
+      textareaRef.current.blur()
     }
-  };
+  }
 
   const handleStopConversation = () => {
-    stopConversationRef.current = true;
+    stopConversationRef.current = true
     setTimeout(() => {
-      stopConversationRef.current = false;
-    }, 1000);
-  };
-
-  const isMobile = () => {
-    const userAgent =
-      typeof window.navigator === 'undefined' ? '' : navigator.userAgent;
-    const mobileRegex =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i;
-    return mobileRegex.test(userAgent);
-  };
+      stopConversationRef.current = false
+    }, 1000)
+  }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !isTyping && !isMobile() && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
+    if (e.key === 'Enter' && !isTyping && !e.shiftKey) {
+      e.preventDefault()
+      handleSend()
     } else if (e.key === '/' && e.metaKey) {
-      e.preventDefault();
+      e.preventDefault()
     }
-  };
+  }
 
   const parseVariables = (content: string) => {
-    const regex = /{{(.*?)}}/g;
-    const foundVariables = [];
-    let match;
+    const regex = /{{(.*?)}}/g
+    const foundVariables = []
+    let match
 
     while ((match = regex.exec(content)) !== null) {
-      foundVariables.push(match[1]);
+      foundVariables.push(match[1])
     }
 
-    return foundVariables;
-  };
+    return foundVariables
+  }
 
   useEffect(() => {
     if (textareaRef && textareaRef.current) {
-      textareaRef.current.style.height = 'inherit';
-      textareaRef.current.style.height = `${textareaRef.current?.scrollHeight}px`;
+      textareaRef.current.style.height = 'inherit'
+      textareaRef.current.style.height = `${textareaRef.current?.scrollHeight}px`
       textareaRef.current.style.overflow = `${
         textareaRef?.current?.scrollHeight > 400 ? 'auto' : 'hidden'
-      }`;
+      }`
     }
-  }, [content]);
+  }, [content])
 
   return (
     <div className="absolute bottom-0 left-0 w-full border-transparent bg-gradient-to-b from-transparent via-white to-white pt-6 dark:border-white/20 dark:via-[#343541] dark:to-[#343541] md:pt-2">
@@ -196,5 +186,5 @@ export const ChatInput = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

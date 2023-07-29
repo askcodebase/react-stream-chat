@@ -6,17 +6,16 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-
-import { saveConversation, saveConversations } from '@/utils/app/conversation';
-import { throttle } from '@/utils/data/throttle';
-import { ChatBody, Conversation, Message } from '@/types/chat';
-import HomeContext from '@/components/ReactStreamChat/home.context';
-import { ChatInput } from './ChatInput';
-import { MemoizedChatMessage } from './MemoizedChatMessage';
+} from 'react'
+import { saveConversation, saveConversations } from '@/utils/app/conversation'
+import { throttle } from '@/utils/data/throttle'
+import { Conversation, Message } from '@/types/chat'
+import { ReactStreamChatContext } from '@/components/ReactStreamChat/context'
+import { ChatInput } from './ChatInput'
+import { MemoizedChatMessage } from './MemoizedChatMessage'
 
 interface Props {
-  stopConversationRef: MutableRefObject<boolean>;
+  stopConversationRef: MutableRefObject<boolean>
 }
 
 export const Chat = memo(({ stopConversationRef }: Props) => {
@@ -24,57 +23,57 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
     state: { selectedConversation, conversations, apiKey },
     handleUpdateConversation,
     dispatch: homeDispatch,
-  } = useContext(HomeContext);
+  } = useContext(ReactStreamChatContext)
 
-  const [currentMessage, setCurrentMessage] = useState<Message>();
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState<boolean>(true);
-  const [showSettings, setShowSettings] = useState<boolean>(false);
+  const [currentMessage, setCurrentMessage] = useState<Message>()
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState<boolean>(true)
+  const [showSettings, setShowSettings] = useState<boolean>(false)
   const [showScrollDownButton, setShowScrollDownButton] =
-    useState<boolean>(false);
+    useState<boolean>(false)
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const chatContainerRef = useRef<HTMLDivElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const handleSend = useCallback(
     async (message: Message, deleteCount = 0) => {
       if (selectedConversation) {
-        let updatedConversation: Conversation;
+        let updatedConversation: Conversation
         if (deleteCount) {
-          const updatedMessages = [...selectedConversation.messages];
+          const updatedMessages = [...selectedConversation.messages]
           for (let i = 0; i < deleteCount; i++) {
-            updatedMessages.pop();
+            updatedMessages.pop()
           }
           updatedConversation = {
             ...selectedConversation,
             messages: [...updatedMessages, message],
-          };
+          }
         } else {
           updatedConversation = {
             ...selectedConversation,
             messages: [...selectedConversation.messages, message],
-          };
+          }
         }
         homeDispatch({
           field: 'selectedConversation',
           value: updatedConversation,
-        });
-        homeDispatch({ field: 'loading', value: true });
-        homeDispatch({ field: 'messageIsStreaming', value: true });
+        })
+        homeDispatch({ field: 'loading', value: true })
+        homeDispatch({ field: 'messageIsStreaming', value: true })
         if (updatedConversation.messages.length === 1) {
-          const { content } = message;
+          const { content } = message
           const customName =
-            content.length > 30 ? content.substring(0, 30) + '...' : content;
+            content.length > 30 ? content.substring(0, 30) + '...' : content
           updatedConversation = {
             ...updatedConversation,
             name: customName,
-          };
+          }
         }
-        homeDispatch({ field: 'loading', value: false });
-        const interval = 500; // 500ms
-        const encoder = new TextEncoder();
+        homeDispatch({ field: 'loading', value: false })
+        const interval = 500 // 500ms
+        const encoder = new TextEncoder()
 
-        let intervalId: NodeJS.Timeout;
+        let intervalId: NodeJS.Timeout
         const markdown = `
 # QuickSort Algorithm in JavaScript
 
@@ -130,21 +129,21 @@ console.log(sortedArray); // Output: [1, 5, 7, 8, 9, 10]
 This implementation of QuickSort uses the Lomuto partition scheme, where we pick the pivot as the middle element of the array. 
 
 QuickSort is an efficient, in-place sorting algorithm that, in practice, outperforms other sorting algorithms for large datasets, especially when the data is stored in a slow-to-access sequential medium like a hard disk. It has an average and worst-case time complexity of O(n log n).
-`;
+`
 
-        const uint8array = encoder.encode(markdown);
+        const uint8array = encoder.encode(markdown)
         const data = new ReadableStream({
           start(controller) {
-            let i = 0;
+            let i = 0
             const intervalId = setInterval(() => {
               if (i < uint8array.length) {
-                controller.enqueue(uint8array.subarray(i, i + 5)); // Enqueue 5 tokens per 500ms
-                i += 5;
+                controller.enqueue(uint8array.subarray(i, i + 5)) // Enqueue 5 tokens per 500ms
+                i += 5
               } else {
-                controller.close();
-                clearInterval(intervalId);
+                controller.close()
+                clearInterval(intervalId)
               }
-            }, 100); // 500ms interval
+            }, 100) // 500ms interval
           },
           pull(controller) {
             // This method is called when the reader wants more data
@@ -152,37 +151,37 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
           },
           cancel(reason) {
             // This method is called when the reader cancels the stream
-            clearInterval(intervalId);
+            clearInterval(intervalId)
           },
-        });
-        const reader = data.getReader();
-        const decoder = new TextDecoder();
-        let done = false;
-        let isFirst = true;
-        let text = '';
+        })
+        const reader = data.getReader()
+        const decoder = new TextDecoder()
+        let done = false
+        let isFirst = true
+        let text = ''
         while (!done) {
           if (stopConversationRef.current === true) {
-            done = true;
-            break;
+            done = true
+            break
           }
-          const { value, done: doneReading } = await reader.read();
-          done = doneReading;
-          const chunkValue = decoder.decode(value);
-          text += chunkValue;
+          const { value, done: doneReading } = await reader.read()
+          done = doneReading
+          const chunkValue = decoder.decode(value)
+          text += chunkValue
           if (isFirst) {
-            isFirst = false;
+            isFirst = false
             const updatedMessages: Message[] = [
               ...updatedConversation.messages,
               { role: 'assistant', content: chunkValue },
-            ];
+            ]
             updatedConversation = {
               ...updatedConversation,
               messages: updatedMessages,
-            };
+            }
             homeDispatch({
               field: 'selectedConversation',
               value: updatedConversation,
-            });
+            })
           } else {
             const updatedMessages: Message[] = updatedConversation.messages.map(
               (message, index) => {
@@ -190,72 +189,66 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
                   return {
                     ...message,
                     content: text,
-                  };
+                  }
                 }
-                return message;
+                return message
               },
-            );
+            )
             updatedConversation = {
               ...updatedConversation,
               messages: updatedMessages,
-            };
+            }
             homeDispatch({
               field: 'selectedConversation',
               value: updatedConversation,
-            });
+            })
           }
         }
-        saveConversation(updatedConversation);
+        saveConversation(updatedConversation)
         const updatedConversations: Conversation[] = conversations.map(
           (conversation) => {
             if (conversation.id === selectedConversation.id) {
-              return updatedConversation;
+              return updatedConversation
             }
-            return conversation;
+            return conversation
           },
-        );
+        )
         if (updatedConversations.length === 0) {
-          updatedConversations.push(updatedConversation);
+          updatedConversations.push(updatedConversation)
         }
-        homeDispatch({ field: 'conversations', value: updatedConversations });
-        saveConversations(updatedConversations);
-        homeDispatch({ field: 'messageIsStreaming', value: false });
+        homeDispatch({ field: 'conversations', value: updatedConversations })
+        saveConversations(updatedConversations)
+        homeDispatch({ field: 'messageIsStreaming', value: false })
       }
     },
-    [
-      apiKey,
-      conversations,
-      selectedConversation,
-      stopConversationRef,
-    ],
-  );
+    [apiKey, conversations, selectedConversation, stopConversationRef],
+  )
 
   const handleScroll = () => {
     if (chatContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } =
-        chatContainerRef.current;
-      const bottomTolerance = 30;
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current
+      const bottomTolerance = 30
 
       if (scrollTop + clientHeight < scrollHeight - bottomTolerance) {
-        setAutoScrollEnabled(false);
-        setShowScrollDownButton(true);
+        setAutoScrollEnabled(false)
+        setShowScrollDownButton(true)
       } else {
-        setAutoScrollEnabled(true);
-        setShowScrollDownButton(false);
+        setAutoScrollEnabled(true)
+        setShowScrollDownButton(false)
       }
     }
-  };
+  }
 
   const handleScrollDown = () => {
     chatContainerRef.current?.scrollTo({
       top: chatContainerRef.current.scrollHeight,
       behavior: 'smooth',
-    });
-  };
+    })
+  }
 
   const handleSettings = () => {
-    setShowSettings(!showSettings);
-  };
+    setShowSettings(!showSettings)
+  }
 
   const onClearAll = () => {
     if (
@@ -265,48 +258,48 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
       handleUpdateConversation(selectedConversation, {
         key: 'messages',
         value: [],
-      });
+      })
     }
-  };
+  }
 
   const scrollDown = () => {
     if (autoScrollEnabled) {
-      messagesEndRef.current?.scrollIntoView(true);
+      messagesEndRef.current?.scrollIntoView(true)
     }
-  };
-  const throttledScrollDown = throttle(scrollDown, 250);
+  }
+  const throttledScrollDown = throttle(scrollDown, 250)
 
   useEffect(() => {
-    throttledScrollDown();
+    throttledScrollDown()
     selectedConversation &&
       setCurrentMessage(
         selectedConversation.messages[selectedConversation.messages.length - 2],
-      );
-  }, [selectedConversation, throttledScrollDown]);
+      )
+  }, [selectedConversation, throttledScrollDown])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setAutoScrollEnabled(entry.isIntersecting);
+        setAutoScrollEnabled(entry.isIntersecting)
         if (entry.isIntersecting) {
-          textareaRef.current?.focus();
+          textareaRef.current?.focus()
         }
       },
       {
         root: null,
         threshold: 0.5,
       },
-    );
-    const messagesEndElement = messagesEndRef.current;
+    )
+    const messagesEndElement = messagesEndRef.current
     if (messagesEndElement) {
-      observer.observe(messagesEndElement);
+      observer.observe(messagesEndElement)
     }
     return () => {
       if (messagesEndElement) {
-        observer.unobserve(messagesEndElement);
+        observer.unobserve(messagesEndElement)
       }
-    };
-  }, [messagesEndRef]);
+    }
+  }, [messagesEndRef])
 
   return (
     <div className="relative flex-1 overflow-hidden bg-white dark:bg-[#343541]">
@@ -321,12 +314,12 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
             message={message}
             messageIndex={index}
             onEdit={(editedMessage) => {
-              setCurrentMessage(editedMessage);
+              setCurrentMessage(editedMessage)
               // discard edited message and the ones that come after then resend
               handleSend(
                 editedMessage,
                 selectedConversation?.messages.length - index,
-              );
+              )
             }}
           />
         ))}
@@ -341,18 +334,18 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
         stopConversationRef={stopConversationRef}
         textareaRef={textareaRef}
         onSend={(message) => {
-          setCurrentMessage(message);
-          handleSend(message, 0);
+          setCurrentMessage(message)
+          handleSend(message, 0)
         }}
         onScrollDownClick={handleScrollDown}
         onRegenerate={() => {
           if (currentMessage) {
-            handleSend(currentMessage, 2);
+            handleSend(currentMessage, 2)
           }
         }}
         showScrollDownButton={showScrollDownButton}
       />
     </div>
-  );
-});
-Chat.displayName = 'Chat';
+  )
+})
+Chat.displayName = 'Chat'
