@@ -1,5 +1,10 @@
 # `@askcodebase/react-stream-chat`
 
+## Features
+
+1. Single `<ReactStreamChat />` React Component
+2. Conversations Support
+
 ## Develop
 
 ```bash

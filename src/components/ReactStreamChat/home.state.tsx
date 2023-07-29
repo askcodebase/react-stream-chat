@@ -1,5 +1,4 @@
 import { Conversation, Message } from '@/types/chat';
-import { ErrorMessage } from '@/types/error';
 import { FolderInterface } from '@/types/folder';
 import { OpenAIModel, OpenAIModelID } from '@/types/openai';
 import { PluginKey } from '@/types/plugin';
@@ -11,7 +10,6 @@ export interface HomeInitialState {
   loading: boolean;
   lightMode: 'light' | 'dark';
   messageIsStreaming: boolean;
-  modelError: ErrorMessage | null;
   models: OpenAIModel[];
   folders: FolderInterface[];
   conversations: Conversation[];
@@ -35,7 +33,6 @@ export const initialState: HomeInitialState = {
   pluginKeys: [],
   lightMode: 'dark',
   messageIsStreaming: false,
-  modelError: null,
   models: [],
   folders: [],
   conversations: [],
