@@ -58,7 +58,7 @@ export const ChatMessage: FC<Props> = memo(({ message, messageIndex }) => {
           ) : (
             <div className="flex flex-row">
               <MemoizedReactMarkdown
-                className="prose dark:prose-invert flex-1"
+                className={`prose dark:prose-invert flex-1`}
                 remarkPlugins={[remarkGfm, remarkMath]}
                 rehypePlugins={[rehypeMathjax]}
                 components={{

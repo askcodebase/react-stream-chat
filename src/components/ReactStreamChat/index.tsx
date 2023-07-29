@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import { useCreateReducer } from '@/hooks/useCreateReducer'
 import {
   cleanConversationHistory,
@@ -10,15 +10,23 @@ import {
   saveConversations,
   updateConversation,
 } from '@/utils/app/conversation'
-import { Conversation } from '@/types/chat'
+import { Conversation, Message } from '@/types/chat'
 import { KeyValuePair } from '@/types/data'
 import { OpenAIModels } from '@/types/openai'
-import { Chat } from '@/components/Chat/Chat'
+import { Chat, ChatInputComponent } from '@/components/Chat/Chat'
 import { ReactStreamChatContext } from './context'
 import { ReactStreamChatInitialState, initialState } from './state'
 import { v4 as uuidv4 } from 'uuid'
 
-export const ReactStreamChat = () => {
+interface Props {
+  CustomChatInput?: ChatInputComponent
+  getResponseStream: (message: Message) => Promise<ReadableStream<Uint8Array>>
+}
+
+export const ReactStreamChat: FC<Props> = ({
+  getResponseStream,
+  CustomChatInput: customChatInput,
+}) => {
   const contextValue = useCreateReducer<ReactStreamChatInitialState>({
     initialState,
   })
@@ -146,7 +154,11 @@ export const ReactStreamChat = () => {
         >
           <div className="flex h-full w-full pt-[48px] sm:pt-0">
             <div className="flex flex-1">
-              <Chat stopConversationRef={stopConversationRef} />
+              <Chat
+                getResponseStream={getResponseStream}
+                CustomChatInput={customChatInput}
+                stopConversationRef={stopConversationRef}
+              />
             </div>
           </div>
         </main>
