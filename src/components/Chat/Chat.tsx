@@ -21,7 +21,7 @@ interface Props {
 
 export const Chat = memo(({ stopConversationRef }: Props) => {
   const {
-    state: { selectedConversation, conversations, models, apiKey, pluginKeys },
+    state: { selectedConversation, conversations, apiKey },
     handleUpdateConversation,
     dispatch: homeDispatch,
   } = useContext(HomeContext);
@@ -37,7 +37,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSend = useCallback(
-    async (message: Message, deleteCount = 0, plugin: Plugin | null = null) => {
+    async (message: Message, deleteCount = 0) => {
       if (selectedConversation) {
         let updatedConversation: Conversation;
         if (deleteCount) {
@@ -61,27 +61,6 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
         });
         homeDispatch({ field: 'loading', value: true });
         homeDispatch({ field: 'messageIsStreaming', value: true });
-        const chatBody: ChatBody = {
-          model: updatedConversation.model,
-          messages: updatedConversation.messages,
-          key: apiKey,
-          prompt: updatedConversation.prompt,
-          temperature: updatedConversation.temperature,
-        };
-        let body;
-        if (!plugin) {
-          body = JSON.stringify(chatBody);
-        } else {
-          body = JSON.stringify({
-            ...chatBody,
-            googleAPIKey: pluginKeys
-              .find((key) => key.pluginId === 'google-search')
-              ?.requiredKeys.find((key) => key.key === 'GOOGLE_API_KEY')?.value,
-            googleCSEId: pluginKeys
-              .find((key) => key.pluginId === 'google-search')
-              ?.requiredKeys.find((key) => key.key === 'GOOGLE_CSE_ID')?.value,
-          });
-        }
         if (updatedConversation.messages.length === 1) {
           const { content } = message;
           const customName =
@@ -246,7 +225,6 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
     [
       apiKey,
       conversations,
-      pluginKeys,
       selectedConversation,
       stopConversationRef,
     ],
@@ -369,7 +347,7 @@ QuickSort is an efficient, in-place sorting algorithm that, in practice, outperf
         onScrollDownClick={handleScrollDown}
         onRegenerate={() => {
           if (currentMessage) {
-            handleSend(currentMessage, 2, null);
+            handleSend(currentMessage, 2);
           }
         }}
         showScrollDownButton={showScrollDownButton}

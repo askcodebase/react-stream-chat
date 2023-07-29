@@ -1,12 +1,10 @@
 import { Conversation, Message } from '@/types/chat';
 import { FolderInterface } from '@/types/folder';
 import { OpenAIModel, OpenAIModelID } from '@/types/openai';
-import { PluginKey } from '@/types/plugin';
 import { Prompt } from '@/types/prompt';
 
 export interface HomeInitialState {
   apiKey: string;
-  pluginKeys: PluginKey[];
   loading: boolean;
   lightMode: 'light' | 'dark';
   messageIsStreaming: boolean;
@@ -24,13 +22,11 @@ export interface HomeInitialState {
   searchTerm: string;
   defaultModelId: OpenAIModelID | undefined;
   serverSideApiKeyIsSet: boolean;
-  serverSidePluginKeysSet: boolean;
 }
 
 export const initialState: HomeInitialState = {
   apiKey: '',
   loading: false,
-  pluginKeys: [],
   lightMode: 'dark',
   messageIsStreaming: false,
   models: [],
@@ -46,6 +42,5 @@ export const initialState: HomeInitialState = {
   messageError: false,
   searchTerm: '',
   defaultModelId: undefined,
-  serverSideApiKeyIsSet: false,
-  serverSidePluginKeysSet: false,
+  serverSideApiKeyIsSet: false
 };
