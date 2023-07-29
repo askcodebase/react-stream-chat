@@ -25,12 +25,7 @@ export interface Props {
 export const ChatMessage: FC<Props> = memo(
   ({ message, messageIndex, onEdit }) => {
     const {
-      state: {
-        selectedConversation,
-        conversations,
-        currentMessage,
-        messageIsStreaming,
-      },
+      state: { selectedConversation, conversations, messageIsStreaming },
       dispatch: homeDispatch,
     } = useContext(ReactStreamChatContext)
 

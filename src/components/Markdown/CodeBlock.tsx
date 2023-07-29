@@ -1,29 +1,29 @@
-import { IconCheck, IconClipboard } from '@tabler/icons-react';
-import { FC, memo, useState } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { IconCheck, IconClipboard } from '@tabler/icons-react'
+import { FC, memo, useState } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 interface Props {
-  language: string;
-  value: string;
+  language: string
+  value: string
 }
 
 export const CodeBlock: FC<Props> = memo(({ language, value }) => {
-  const [isCopied, setIsCopied] = useState<Boolean>(false);
+  const [isCopied, setIsCopied] = useState<Boolean>(false)
 
   const copyToClipboard = () => {
     if (!navigator.clipboard || !navigator.clipboard.writeText) {
-      return;
+      return
     }
 
     navigator.clipboard.writeText(value).then(() => {
-      setIsCopied(true);
+      setIsCopied(true)
 
       setTimeout(() => {
-        setIsCopied(false);
-      }, 2000);
-    });
-  };
+        setIsCopied(false)
+      }, 2000)
+    })
+  }
 
   return (
     <div className="codeblock relative font-sans text-[16px]">
@@ -49,6 +49,6 @@ export const CodeBlock: FC<Props> = memo(({ language, value }) => {
         {value}
       </SyntaxHighlighter>
     </div>
-  );
-});
-CodeBlock.displayName = 'CodeBlock';
+  )
+})
+CodeBlock.displayName = 'CodeBlock'

@@ -12,13 +12,11 @@ import {
 } from '@/utils/app/conversation'
 import { Conversation } from '@/types/chat'
 import { KeyValuePair } from '@/types/data'
-import { OpenAIModelID, OpenAIModels } from '@/types/openai'
+import { OpenAIModels } from '@/types/openai'
 import { Chat } from '@/components/Chat/Chat'
 import { ReactStreamChatContext } from './context'
 import { ReactStreamChatInitialState, initialState } from './state'
 import { v4 as uuidv4 } from 'uuid'
-
-const defaultModelId = OpenAIModelID.GPT_3_5
 
 export const ReactStreamChat = () => {
   const contextValue = useCreateReducer<ReactStreamChatInitialState>({
@@ -26,7 +24,7 @@ export const ReactStreamChat = () => {
   })
 
   const {
-    state: { lightMode, conversations, selectedConversation },
+    state: { conversations, selectedConversation, defaultModelId },
     dispatch,
   } = contextValue
 
@@ -144,7 +142,7 @@ export const ReactStreamChat = () => {
     >
       {selectedConversation && (
         <main
-          className={`flex h-screen w-screen flex-col text-sm text-white dark:text-white ${lightMode}`}
+          className={`flex h-screen w-screen flex-col text-sm text-white dark:text-white dark`}
         >
           <div className="flex h-full w-full pt-[48px] sm:pt-0">
             <div className="flex flex-1">

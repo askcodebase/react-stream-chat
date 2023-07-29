@@ -21,7 +21,6 @@ interface Props {
 export const Chat = memo(({ stopConversationRef }: Props) => {
   const {
     state: { selectedConversation, conversations },
-    handleUpdateConversation,
     dispatch: homeDispatch,
   } = useContext(ReactStreamChatContext)
 
